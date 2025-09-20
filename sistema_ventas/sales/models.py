@@ -1,5 +1,6 @@
 from django.db import models
-from customer.models import Customer, Employee
+from customer.models import Customer
+from employee.models import Employee
 
 class Sales(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
