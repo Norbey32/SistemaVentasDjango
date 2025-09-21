@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalle de Venta</title>
+</head>
+<body>
+    <h1>Detalle de la Venta #{{ sale.pk }}</h1>
+
+    <p><strong>Fecha de Venta:</strong> {{ sale.sale_date }}</p>
+    <p><strong>Cliente:</strong> {{ sale.customer.name }}</p>
+    <p><strong>Empleado:</strong> {{ sale.employee.name }}</p>
+    <p><strong>Total:</strong> ${{ sale.total }}</p>
+
+    <a href="{% url 'sales-list' %}">Volver a la lista de ventas</a>
+</body>
+</html>
