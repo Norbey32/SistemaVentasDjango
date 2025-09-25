@@ -6,5 +6,5 @@ from .forms import RegisterForm
 class RegisterView(CreateView):
     model = User
     form_class = RegisterForm
-    template_name = 'registration/register.html'
+    template_name = 'users/register.html'
     success_url = reverse_lazy('login')

@@ -1,13 +1,6 @@
-# sales/urls.py
-
 from django.urls import path
-from .views import (
-    SalesListView,
-    SalesCreateView,
-    SalesUpdateView,
-    SalesDeleteView,
-    SalesDetailView,
-)
+from .views import SalesListView, SalesCreateView, SalesUpdateView, SalesDeleteView
+from sales_detail.views import SalesDetailView
 
 urlpatterns = [
 

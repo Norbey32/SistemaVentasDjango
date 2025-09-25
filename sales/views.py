@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Sales
-from .forms import SalesForm # Asegúrate de crear este formulario en forms.py
+from .forms import SalesForm
 
 # Vista para listar todos los registros de ventas.
 class SalesListView(ListView):

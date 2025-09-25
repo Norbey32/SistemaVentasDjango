@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_tailwind',
     'categories',
     'customer',
     'employee',
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     'sales',
     'sales_detail',
     'suppliers',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,12 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
+
+LOGIN_REDIRECT_URL = 'sales-list'
+LOGOUT_REDIRECT_URL = 'sales-list'
+LOGIN_URL = 'login'
+
