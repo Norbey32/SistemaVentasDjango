@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import SaleDetail
 
-# Register your models here.
+class SaleDetailAdmin(admin.ModelAdmin):
+    model = SaleDetail
+    list_display = ('sale', 'product', 'quantity', 'unit_price', 'discount')
+    list_filter = ('sale', 'product')
+
+admin.site.register(SaleDetail, SaleDetailAdmin)

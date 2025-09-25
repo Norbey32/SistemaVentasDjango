@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import Categories
 
-# Register your models here.
+class CategoriesAdmin(admin.ModelAdmin):
+    model = Categories
+    list_display = ('name', 'created_at', 'updated_at')
+    search_fields = ('name',)
+
+admin.site.register(Categories, CategoriesAdmin)
