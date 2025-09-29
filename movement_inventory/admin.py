@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models i mport MovementInventory
+from .models import MovementInventory
 
 class MovementInventoryAdmin(admin.ModelAdmin):
     model = MovementInventory

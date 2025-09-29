@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Supplier
+from .models import Suppliers
 
 
-class SupplierAdmin(admin.ModelAdmin):
-    model = Supplier
+class SuppliersAdmin(admin.ModelAdmin):
+    model = Suppliers
     list_display = ('name', 'contact_email', 'phone_number', 'address')
     search_fields = ('name',)
 
-admin.site.register(Supplier, SupplierAdmin)
+admin.site.register(Suppliers, SuppliersAdmin)
