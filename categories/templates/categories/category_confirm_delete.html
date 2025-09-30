@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Categoría{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Confirmar Eliminación</h1>
+
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6" role="alert">
+        <p class="font-bold text-red-700">¡Advertencia!</p>
+        <p class="text-red-600">
+            Estás a punto de eliminar la categoría: <strong>{{ object.name }}</strong>. 
+            Esta acción es irreversible.
+        </p>
+    </div>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+
+        <p class="text-lg text-gray-700">
+            ¿Estás seguro de que deseas eliminar la categoría **"{{ object.name }}"**?
+        </p>
+        
+        <div class="flex space-x-4 pt-4">
+            <button type="submit" class="px-4 py-2 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                Sí, Eliminar
+            </button>
+            
+            <a href="{% url 'category-list' %}" class="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 transition-colors">
+                Cancelar
+            </a>
+        </div>
+    </form>
+{% endblock %}

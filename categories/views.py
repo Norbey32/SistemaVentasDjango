@@ -14,7 +14,7 @@ class CategoryCreateView(CreateView):
     model = Categories
     form_class = CategoryForm
     template_name = 'categories/category_form.html'
-    success_url = reverse_lazy('category-list') # Redirige a la lista de categorías
+    success_url = reverse_lazy('category-list') 
 
 # Vista para actualizar una categoría existente.
 class CategoryUpdateView(UpdateView):
