@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Categories # Importa tu modelo
-from .forms import CategoryForm # Asumimos que tienes un formulario, si no, lo creas
+from .models import Categories 
+from .forms import CategoryForm 
 
 # Vistas CRUD para Categories
 class CategoryListView(ListView):

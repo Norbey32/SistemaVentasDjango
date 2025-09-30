@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Employee
-from .forms import EmployeeForm # Crea este formulario
+from .forms import EmployeeForm 
 
 # Vistas CRUD para Employee
 class EmployeeListView(ListView):
