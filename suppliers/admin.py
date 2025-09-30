@@ -4,7 +4,7 @@ from .models import Suppliers
 
 class SuppliersAdmin(admin.ModelAdmin):
     model = Suppliers
-    list_display = ('name', 'contact_email', 'phone_number', 'address')
+    list_display = ('name', 'contact', 'phone')
     search_fields = ('name',)
 
 admin.site.register(Suppliers, SuppliersAdmin)

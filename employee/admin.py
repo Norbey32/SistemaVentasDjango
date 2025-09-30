@@ -4,5 +4,5 @@ from .models import Employee
 
 class EmployeeAdmin(admin.ModelAdmin):
     model = Employee
-    list_display = ('id', 'name', 'last_name', 'email', 'phone_number')
-    search_fields = ('name')
+    list_display = ('name', 'email', 'phone_number')
+    search_fields = ('name',)
