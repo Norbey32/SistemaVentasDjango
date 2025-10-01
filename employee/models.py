@@ -12,4 +12,4 @@ class Employee(models.Model):
 
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.name} {self.last_name}"

@@ -1,0 +1,70 @@
+{% extends "base.html" %} 
+
+{% block title %}
+    {% if object %}
+        Editar Cargo: {{ object.name }}
+    {% else %}
+        Crear Nuevo Cargo
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center items-center">
+        <div class="w-full max-w-lg bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+            
+            <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">
+                {% if object %}
+                    📝 Editar Cargo
+                {% else %}
+                    ✨ Crear Nuevo Cargo
+                {% endif %}
+            </h1>
+
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="text-red-500">*</span>
+                            {% endif %}
+                        </label>
+                        
+                        {{ field }}
+
+                        {% for error in field.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                        {% endfor %}
+
+                        {% if field.help_text %}
+                            <p class="mt-1 text-xs text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                {% if form.non_field_errors %}
+                    <div class="p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg" role="alert">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="flex justify-between gap-4 pt-4">
+                    <a href="{% url 'post-list' %}" class="w-1/2 text-center py-3 px-4 border border-gray-300 bg-white text-gray-700 font-semibold rounded-lg shadow-sm hover:bg-gray-100 transition duration-150">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="w-1/2 py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        {% if object %}
+                            Guardar Cambios
+                        {% else %}
+                            Guardar Cargo
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

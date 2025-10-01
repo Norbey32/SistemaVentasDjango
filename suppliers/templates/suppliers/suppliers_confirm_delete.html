@@ -1,0 +1,52 @@
+{% extends "base.html" %} 
+
+{% block title %}Confirmar Eliminación de Proveedor - Sistema de Ventas{% endblock %}
+
+{% block content %}
+
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-red-200">
+        <div class="text-center mb-6">
+            <h1 class="text-4xl font-extrabold text-red-600 mb-2">
+                🚫 Eliminar Proveedor
+            </h1>
+            <p class="text-xl text-gray-700">¿Estás seguro que deseas eliminar al proveedor **{{ suppliers.name }}**? Esto puede afectar el inventario y las compras registradas.</p>
+        </div>
+        
+        <div class="bg-red-50 p-5 rounded-lg border border-red-300 mb-6">
+            <h2 class="text-2xl font-semibold text-red-800 mb-3 border-b pb-2 border-red-200">
+                Detalles del Proveedor
+            </h2>
+            <p class="text-lg text-gray-800 mb-2">
+                <span class="font-medium text-red-600">Nombre de Contacto:</span> 
+                {{ suppliers.contact_name|default:"N/A" }}
+            </p>
+            <p class="text-lg text-gray-800 mb-2">
+                <span class="font-medium text-red-600">Teléfono:</span> 
+                {{ suppliers.phone|default:"N/A" }}
+            </p>
+            <p class="text-lg text-gray-800">
+                <span class="font-medium text-red-600">Email:</span> 
+                {{ suppliers.email|default:"N/A" }}
+            </p>
+        </div>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <p class="text-center text-gray-600 font-medium">
+                Confirma la eliminación del proveedor: <strong>{{ suppliers.name }}</strong>.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-between gap-4 pt-4">
+                <button type="submit" class="w-full sm:w-1/2 py-3 px-6 bg-red-600 text-white font-bold rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                    Sí, Eliminar Permanentemente
+                </button>
+                
+                <a href="{% url 'suppliers-list' %}" class="w-full sm:w-1/2 text-center py-3 px-6 border border-gray-300 bg-gray-100 text-gray-700 font-bold rounded-lg shadow-md hover:bg-gray-200 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-50">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

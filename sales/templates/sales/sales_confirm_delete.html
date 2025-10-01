@@ -1,0 +1,69 @@
+{% extends "base.html" %} 
+
+{% block title %}Confirmar Anulación de Venta - Sistema de Ventas{% endblock %}
+
+{% block content %}
+
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-red-200">
+        <div class="text-center mb-6">
+            <h1 class="text-4xl font-extrabold text-red-600 mb-2">
+                🛑 Anular Venta
+            </h1>
+            <p class="text-xl text-gray-700">
+                ¿Estás seguro que deseas **anular** (eliminar) este registro de venta? 
+                Esto puede impactar tus reportes financieros.
+            </p>
+        </div>
+        
+        <div class="bg-red-50 p-5 rounded-lg border border-red-300 mb-6">
+            <h2 class="text-2xl font-semibold text-red-800 mb-3 border-b pb-2 border-red-200">
+                Detalles del Registro
+            </h2>
+            <p class="text-lg text-gray-800 mb-2">
+                <span class="font-medium text-red-600">ID de Venta:</span> 
+                #{{ sales.pk }}
+            </p>
+            {% comment %} 
+                Asume que tu modelo Sales tiene campos como total, date, o customer 
+                Ajusta estos campos según la estructura real de tu modelo Sales
+            {% endcomment %}
+            {% if sales.customer %}
+                <p class="text-lg text-gray-800 mb-2">
+                    <span class="font-medium text-red-600">Cliente:</span> 
+                    {{ sales.customer }}
+                </p>
+            {% endif %}
+            {% if sales.total_amount %}
+                <p class="text-lg text-gray-800 mb-2">
+                    <span class="font-medium text-red-600">Monto Total:</span> 
+                    ${{ sales.total_amount }}
+                </p>
+            {% endif %}
+             {% if sales.sale_date %}
+                <p class="text-lg text-gray-800">
+                    <span class="font-medium text-red-600">Fecha:</span> 
+                    {{ sales.sale_date|date:"d M Y H:i" }}
+                </p>
+            {% endif %}
+        </div>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <p class="text-center text-gray-600 font-medium">
+                Confirma la anulación del registro de venta **#{{ sales.pk }}**.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-between gap-4 pt-4">
+                <button type="submit" class="w-full sm:w-1/2 py-3 px-6 bg-red-600 text-white font-bold rounded-lg shadow-lg hover:bg-red-700 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                    Sí, Anular Venta
+                </button>
+                
+                <a href="{% url 'sales-list' %}" class="w-full sm:w-1/2 text-center py-3 px-6 border border-gray-300 bg-gray-100 text-gray-700 font-bold rounded-lg shadow-md hover:bg-gray-200 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-50">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

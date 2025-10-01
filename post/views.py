@@ -13,18 +13,18 @@ class PostListView(ListView):
 class PostCreateView(CreateView):
     model = Post
     form_class = PostForm
-    template_name = 'posts/post_form.html'
+    template_name = 'post/post_form.html'
     success_url = reverse_lazy('post-list')  # Redirige a la lista de puestos
 
 # Vista para actualizar un puesto de trabajo existente.
 class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
-    template_name = 'posts/post_form.html'
+    template_name = 'post/post_form.html'
     success_url = reverse_lazy('post-list')
 
 # Vista para eliminar un puesto de trabajo.
 class PostDeleteView(DeleteView):
     model = Post
-    template_name = 'posts/post_confirm_delete.html'
+    template_name = 'post/post_confirm_delete.html'
     success_url = reverse_lazy('post-list')
