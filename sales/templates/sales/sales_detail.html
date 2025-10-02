@@ -28,11 +28,11 @@
                     </p>
                     <p class="text-lg text-gray-800">
                         <span class="font-medium text-blue-600">Cliente:</span> 
-                        {{ object.customer.nombre }} {{ object.customer.apellido }}
+                        {{ object.customer.name }} {{ object.customer.last_name }}
                     </p>
                     <p class="text-lg text-gray-800">
                         <span class="font-medium text-blue-600">Empleado:</span> 
-                        {{ object.employee.nombre }} {{ object.employee.apellido }}
+                        {{ object.employee.name }} {{ object.employee.last_name }}
                     </p>
                     <p class="text-lg text-gray-800">
                         <span class="font-medium text-blue-600">Fecha:</span> 
@@ -98,7 +98,13 @@
                         {% for detail in sale_details %}
                         <tr class="border-b border-green-100 hover:bg-green-50">
                             <td class="py-3 px-4 text-left">
-                                <span class="font-semibold">{{ detail.product.nombre }}</span>
+                                <span class="font-semibold">
+                                    {% if detail.product.nombre %}
+                                        {{ detail.product.nombre }}
+                                    {% else %}
+                                        Producto #{{ detail.product.id }}
+                                    {% endif %}
+                                </span>
                                 {% if detail.product.codigo %}
                                 <br><span class="text-xs text-gray-500">Código: {{ detail.product.codigo }}</span>
                                 {% endif %}
@@ -112,17 +118,51 @@
                     </tbody>
                     <tfoot class="bg-green-100">
                         <tr class="text-green-800 font-bold">
-                            <td colspan="4" class="py-3 px-4 text-right">Total Productos:</td>
+                            <td colspan="3" class="py-3 px-4 text-right">Total Items:</td>
                             <td class="py-3 px-4 text-right">{{ sale_details.count }}</td>
+                            <td class="py-3 px-4 text-right">${{ object.subtotal }}</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
             {% else %}
             <div class="text-center py-8">
-                <p class="text-gray-500 text-lg">No hay productos registrados para esta venta.</p>
+                <p class="text-gray-500 text-lg mb-4">No hay productos registrados para esta venta.</p>
+                {% if not sale_details %}
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md mx-auto">
+                    <p class="text-sm text-yellow-700">
+                        💡 <strong>Nota:</strong> Si acabas de agregar el modelo SalesDetail, necesitas ejecutar:
+                        <code class="block mt-2 bg-yellow-100 p-2 rounded text-xs">python manage.py makemigrations sales<br>python manage.py migrate</code>
+                    </p>
+                </div>
+                {% endif %}
             </div>
             {% endif %}
+        </div>
+
+        <!-- Resumen Financiero -->
+        <div class="bg-purple-50 p-6 rounded-lg border border-purple-200 mb-6">
+            <h2 class="text-2xl font-semibold text-purple-800 mb-4 border-b pb-2 border-purple-200">
+                💰 Resumen Financiero
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                <div class="bg-white p-4 rounded-lg border border-purple-100">
+                    <p class="text-sm text-purple-600 font-medium">Subtotal</p>
+                    <p class="text-2xl font-bold text-purple-700">${{ object.subtotal }}</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-purple-100">
+                    <p class="text-sm text-purple-600 font-medium">Impuesto</p>
+                    <p class="text-2xl font-bold text-purple-700">${{ object.tax }}</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-purple-100">
+                    <p class="text-sm text-purple-600 font-medium">Descuento</p>
+                    <p class="text-2xl font-bold text-purple-700">${{ object.discount }}</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg border border-green-200 bg-green-50">
+                    <p class="text-sm text-green-600 font-medium">Total Final</p>
+                    <p class="text-2xl font-bold text-green-700">${{ object.total }}</p>
+                </div>
+            </div>
         </div>
 
         <!-- Acciones -->

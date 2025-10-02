@@ -1,7 +1,7 @@
 from django.db import models
 from customer.models import Customer
 from employee.models import Employee
-from product.models import Product
+from products.models import Product
 
 class Sales(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

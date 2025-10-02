@@ -69,7 +69,11 @@ class SalesDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sale_details'] = self.object.details.all()
+        try:
+            # Intenta obtener los detalles, si falla muestra lista vacía
+            context['sale_details'] = self.object.details.all()
+        except:
+            context['sale_details'] = []
         return context
 
 # Vista para eliminar una venta
