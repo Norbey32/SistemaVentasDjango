@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="flex justify-center items-center">
-        <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+        <div class="w-full max-w-4xl bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
             
             <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">
                 {% if object %}
@@ -23,26 +23,84 @@
             <form method="post" class="space-y-5">
                 {% csrf_token %}
                 
-                {% for field in form %}
-                    <div class="mb-4">
-                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                            {{ field.label }}
-                            {% if field.field.required %}
-                                <span class="text-red-500">*</span>
+                <!-- Sección: Datos Generales de la Venta -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">📋 Datos de la Venta</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for field in form %}
+                            {% if field.name != 'state' %}
+                            <div class="mb-4">
+                                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="text-red-500">*</span>
+                                    {% endif %}
+                                </label>
+                                
+                                {{ field }}
+
+                                {% for error in field.errors %}
+                                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            </div>
                             {% endif %}
-                        </label>
-                        
-                        {{ field }}
-
-                        {% for error in field.errors %}
-                            <p class="mt-1 text-sm text-red-600">{{ error }}</p>
                         {% endfor %}
-
-                        {% if field.help_text %}
-                            <p class="mt-1 text-xs text-gray-500">{{ field.help_text }}</p>
-                        {% endif %}
                     </div>
-                {% endfor %}
+                </div>
+
+                <!-- Sección: Detalles de Productos -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4">🛍️ Productos de la Venta</h2>
+                    
+                    {{ details.management_form }}
+                    
+                    <div class="space-y-4" id="details-formset">
+                        {% for form_detail in details %}
+                        <div class="border border-gray-200 p-4 rounded-lg bg-white detail-form">
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                                {% for field in form_detail.visible_fields %}
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600 mb-1">
+                                        {{ field.label }}
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <p class="text-xs text-red-600 mt-1">{{ error }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                                
+                                <!-- Campo oculto para DELETE -->
+                                {% if form_detail.DELETE %}
+                                    <div class="flex items-end">
+                                        <label class="flex items-center text-xs text-gray-600">
+                                            {{ form_detail.DELETE }} Eliminar
+                                        </label>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Campo ID oculto -->
+                                {% for hidden in form_detail.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Estado de la venta (al final) -->
+                    <div class="mt-6 p-4 bg-white border border-gray-200 rounded-lg">
+                        <label for="{{ form.state.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ form.state.label }}
+                        </label>
+                        <div class="flex items-center">
+                            {{ form.state }}
+                            <span class="ml-2 text-sm text-gray-600">Activo/Inactivo</span>
+                        </div>
+                    </div>
+                </div>
                 
                 {% if form.non_field_errors %}
                     <div class="p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg" role="alert">

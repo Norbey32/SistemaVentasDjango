@@ -21,28 +21,40 @@
             </h2>
             <p class="text-lg text-gray-800 mb-2">
                 <span class="font-medium text-red-600">ID de Venta:</span> 
-                #{{ sales.pk }}
+                #{{ object.pk }}
             </p>
-            {% comment %} 
-                Asume que tu modelo Sales tiene campos como total, date, o customer 
-                Ajusta estos campos según la estructura real de tu modelo Sales
-            {% endcomment %}
-            {% if sales.customer %}
+            
+            <!-- Información real de tu modelo Sales -->
+            {% if object.customer %}
                 <p class="text-lg text-gray-800 mb-2">
                     <span class="font-medium text-red-600">Cliente:</span> 
-                    {{ sales.customer }}
+                    {{ object.customer.nombre }} {{ object.customer.apellido }}
                 </p>
             {% endif %}
-            {% if sales.total_amount %}
+            
+            {% if object.employee %}
                 <p class="text-lg text-gray-800 mb-2">
-                    <span class="font-medium text-red-600">Monto Total:</span> 
-                    ${{ sales.total_amount }}
+                    <span class="font-medium text-red-600">Empleado:</span> 
+                    {{ object.employee.nombre }} {{ object.employee.apellido }}
                 </p>
             {% endif %}
-             {% if sales.sale_date %}
-                <p class="text-lg text-gray-800">
+            
+            <p class="text-lg text-gray-800 mb-2">
+                <span class="font-medium text-red-600">Monto Total:</span> 
+                ${{ object.total }}
+            </p>
+            
+            {% if object.sale_date %}
+                <p class="text-lg text-gray-800 mb-2">
                     <span class="font-medium text-red-600">Fecha:</span> 
-                    {{ sales.sale_date|date:"d M Y H:i" }}
+                    {{ object.sale_date|date:"d M Y H:i" }}
+                </p>
+            {% endif %}
+            
+            <!-- Información adicional sobre detalles que se eliminarán -->
+            {% if object.details.all %}
+                <p class="text-lg text-red-700 font-semibold mt-3">
+                    ⚠️ También se eliminarán {{ object.details.count }} producto(s) asociado(s)
                 </p>
             {% endif %}
         </div>
@@ -51,7 +63,7 @@
             {% csrf_token %}
             
             <p class="text-center text-gray-600 font-medium">
-                Confirma la anulación del registro de venta **#{{ sales.pk }}**.
+                Confirma la anulación del registro de venta **#{{ object.pk }}**.
             </p>
 
             <div class="flex flex-col sm:flex-row justify-between gap-4 pt-4">

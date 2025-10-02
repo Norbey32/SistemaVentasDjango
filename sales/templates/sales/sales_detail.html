@@ -1,0 +1,146 @@
+{% extends "base.html" %} 
+
+{% block title %}Detalle de Venta #{{ object.pk }} - Sistema de Ventas{% endblock %}
+
+{% block content %}
+
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-gray-800 mb-2">
+                📄 Detalle de Venta
+            </h1>
+            <p class="text-xl text-gray-600">
+                Información completa de la venta #{{ object.pk }}
+            </p>
+        </div>
+
+        <!-- Información General de la Venta -->
+        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+            <h2 class="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2 border-blue-200">
+                📋 Información General
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-3">
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">ID de Venta:</span> 
+                        #{{ object.pk }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Cliente:</span> 
+                        {{ object.customer.nombre }} {{ object.customer.apellido }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Empleado:</span> 
+                        {{ object.employee.nombre }} {{ object.employee.apellido }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Fecha:</span> 
+                        {{ object.sale_date|date:"d M Y H:i" }}
+                    </p>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Subtotal:</span> 
+                        ${{ object.subtotal }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Impuesto:</span> 
+                        ${{ object.tax }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Descuento:</span> 
+                        ${{ object.discount }}
+                    </p>
+                    <p class="text-lg text-gray-800 font-semibold">
+                        <span class="font-bold text-green-600">Total:</span> 
+                        ${{ object.total }}
+                    </p>
+                </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-blue-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Método de Pago:</span> 
+                        {{ object.payment_method }}
+                    </p>
+                    <p class="text-lg text-gray-800">
+                        <span class="font-medium text-blue-600">Estado:</span> 
+                        {% if object.state %}
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-medium">Activo</span>
+                        {% else %}
+                            <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-medium">Inactivo</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detalles de Productos -->
+        <div class="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
+            <h2 class="text-2xl font-semibold text-green-800 mb-4 border-b pb-2 border-green-200">
+                🛍️ Productos de la Venta
+            </h2>
+            
+            {% if sale_details %}
+            <div class="overflow-x-auto bg-white rounded-lg shadow-sm">
+                <table class="min-w-full table-auto border-collapse">
+                    <thead>
+                        <tr class="bg-green-100 text-green-800 uppercase text-sm leading-normal">
+                            <th class="py-3 px-4 text-left">Producto</th>
+                            <th class="py-3 px-4 text-center">Cantidad</th>
+                            <th class="py-3 px-4 text-right">Precio Unitario</th>
+                            <th class="py-3 px-4 text-right">Descuento</th>
+                            <th class="py-3 px-4 text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        {% for detail in sale_details %}
+                        <tr class="border-b border-green-100 hover:bg-green-50">
+                            <td class="py-3 px-4 text-left">
+                                <span class="font-semibold">{{ detail.product.nombre }}</span>
+                                {% if detail.product.codigo %}
+                                <br><span class="text-xs text-gray-500">Código: {{ detail.product.codigo }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3 px-4 text-center">{{ detail.quantity }}</td>
+                            <td class="py-3 px-4 text-right">${{ detail.unit_price }}</td>
+                            <td class="py-3 px-4 text-right">${{ detail.discount }}</td>
+                            <td class="py-3 px-4 text-right font-semibold">${{ detail.subtotal }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="bg-green-100">
+                        <tr class="text-green-800 font-bold">
+                            <td colspan="4" class="py-3 px-4 text-right">Total Productos:</td>
+                            <td class="py-3 px-4 text-right">{{ sale_details.count }}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <p class="text-gray-500 text-lg">No hay productos registrados para esta venta.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Acciones -->
+        <div class="flex flex-col sm:flex-row justify-between gap-4 pt-6 border-t border-gray-200">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a href="{% url 'sales-list' %}" class="w-full sm:w-auto text-center py-3 px-6 border border-gray-300 bg-gray-100 text-gray-700 font-bold rounded-lg shadow-md hover:bg-gray-200 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-gray-400 focus:ring-opacity-50">
+                    ← Volver a Lista
+                </a>
+                <a href="{% url 'sales-update' object.pk %}" class="w-full sm:w-auto text-center py-3 px-6 bg-blue-600 text-white font-bold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50">
+                    ✏️ Editar Venta
+                </a>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a href="{% url 'sales-delete' object.pk %}" class="w-full sm:w-auto text-center py-3 px-6 bg-red-600 text-white font-bold rounded-lg shadow-md hover:bg-red-700 transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                    🗑️ Eliminar Venta
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

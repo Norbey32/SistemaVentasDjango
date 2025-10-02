@@ -1,6 +1,7 @@
 from django.db import models
 from customer.models import Customer
 from employee.models import Employee
+from product.models import Product
 
 class Sales(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -15,3 +16,14 @@ class Sales(models.Model):
 
     def __str__(self):
         return f"Sale # {self.id}"
+
+class SalesDetail(models.Model):
+    sale = models.ForeignKey(Sales, on_delete=models.CASCADE, related_name='details')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Detail #{self.id} - Sale #{self.sale.id}"
