@@ -21,7 +21,7 @@ class Product(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, verbose_name="Categoría")
     supplier = models.ForeignKey(Suppliers, on_delete=models.CASCADE, verbose_name="Proveedor")
     product_state = models.CharField(
-        max_length=3,
+        max_length=50,
         choices=EstadoProducto.choices,
         default=EstadoProducto.ACTIVO,
         verbose_name="Estado del Producto"

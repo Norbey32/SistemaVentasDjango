@@ -25,21 +25,21 @@ class EstadoVenta(models.TextChoices):
 
 
 class Sales(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, verbose_name="Cliente")
-    employee = models.ForeignKey(Employee, on_delete=models.PROTECT, verbose_name="Empleado")
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name="Cliente")
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name="Empleado")
     sale_date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Venta")
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Subtotal")
     tax = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Impuesto")
     discount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Descuento")
     total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total")
     payment_method = models.CharField(
-        max_length=3,
+        max_length=50,
         choices=MetodoPago.choices,
         default=MetodoPago.EFECTIVO,
         verbose_name="Método de Pago"
     )
     sale_state = models.CharField(
-        max_length=3,
+        max_length=50,
         choices=EstadoVenta.choices,
         default=EstadoVenta.PENDIENTE,
         verbose_name="Estado de la Venta"
@@ -51,7 +51,7 @@ class Sales(models.Model):
 
 class SalesDetail(models.Model):
     sale = models.ForeignKey(Sales, on_delete=models.CASCADE, related_name='details', verbose_name="Venta")
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name="Producto")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Producto")
     quantity = models.IntegerField(verbose_name="Cantidad")
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio Unitario")
     discount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Descuento")

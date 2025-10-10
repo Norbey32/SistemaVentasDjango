@@ -16,7 +16,7 @@ class TipoMovimiento(models.TextChoices):
 # Modelo de Inventario con el TipoMovimiento
 class MovementInventory(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Producto')
-    movement_type = models.CharField(max_length=3, choices=TipoMovimiento.choices, default=TipoMovimiento.AJUSTE, verbose_name='Tipo de Movimiento')
+    movement_type = models.CharField(max_length=50, choices=TipoMovimiento.choices, default=TipoMovimiento.AJUSTE, verbose_name='Tipo de Movimiento')
     quantity = models.IntegerField(verbose_name='Cantidad')
     movement_date = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Movimiento')
     note = models.TextField(blank=True, null=True, verbose_name='Nota')
