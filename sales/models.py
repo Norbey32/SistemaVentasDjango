@@ -14,6 +14,16 @@ class MetodoPago(models.TextChoices):
     PAGO_MOVIL = 'PMO', 'Pago Móvil'
     CRIPTOMONEDA = 'CRP', 'Criptomoneda'
 
+
+# Definición del ENUM para el Estado de Venta
+class EstadoVenta(models.TextChoices):
+    COMPLETADA = 'CMP', 'Completada'
+    PENDIENTE = 'PEN', 'Pendiente de Pago'
+    CANCELADA = 'CAN', 'Cancelada'
+    DEVUELTA = 'DEV', 'Devuelta'
+    EN_PROCESO = 'PRC', 'En Proceso (Borrador)'
+
+
 class Sales(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, verbose_name="Cliente")
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, verbose_name="Empleado")
@@ -28,11 +38,16 @@ class Sales(models.Model):
         default=MetodoPago.EFECTIVO,
         verbose_name="Método de Pago"
     )
-    state = models.BooleanField(default=True, verbose_name="Estado (Activo)")
+    sale_state = models.CharField(
+        max_length=3,
+        choices=EstadoVenta.choices,
+        default=EstadoVenta.PENDIENTE,
+        verbose_name="Estado de la Venta"
+    )
 
 
     def __str__(self):
-        return f"Sale # {self.id}"
+        return f"Venta # {self.id} ({self.get_sale_state_display()})"
 
 class SalesDetail(models.Model):
     sale = models.ForeignKey(Sales, on_delete=models.CASCADE, related_name='details', verbose_name="Venta")
