@@ -8,7 +8,7 @@ from .models import Sales, SalesDetail
 from .forms import SalesForm, SalesDetailFormSet
 
 # Tasa de impuesto constante 
-TAX_RATE = Decimal('0.16') 
+TAX_RATE = Decimal('0.19') 
 # Número de lugares decimales
 DECIMAL_PLACES = 2
 
