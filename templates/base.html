@@ -11,47 +11,132 @@
             font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             background-color: #f7f7f7;
         }
+        /* Clase para ocultar la barra lateral en la impresión (útil para facturas) */
+        @media print {
+            .no-print-sidebar { display: none !important; }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+        }
     </style>
 </head>
-<body class="bg-gray-100 font-sans">
 
-    <!-- Barra de Navegación -->
-    <nav class="bg-white shadow-lg p-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center space-x-4">
-            <a href="/" class="text-2xl font-bold text-gray-800 hover:text-blue-500 transition-colors">
-                Sistema de Ventas
+<!-- El cuerpo ahora es un contenedor Flexbox que ocupa toda la altura de la pantalla (h-screen) -->
+<body class="bg-gray-100 font-sans flex h-screen">
+
+    <!-- 1. BARRA LATERAL (SIDEBAR) - Fija a la izquierda -->
+    <aside class="no-print-sidebar w-64 bg-gray-900 text-white flex flex-col shadow-2xl z-40">
+        
+        <!-- Encabezado de la Barra Lateral (Logo y Nombre de la Empresa) -->
+        <div class="p-6 border-b border-gray-700 bg-gray-800">
+            <!-- Espacio para tu Logo de la Empresa (Actualmente placeholder) -->
+            <div class="flex justify-center mb-2">
+                <!-- Puedes cambiar 'w-16 h-16' para ajustar el tamaño del logo -->
+                <img src="https://placehold.co/64x64/3b82f6/ffffff?text=LOGO" alt="Logo Empresa" class="rounded-full w-16 h-16 object-cover border-2 border-blue-500">
+            </div>
+            <!-- Espacio para el Nombre de la Empresa -->
+            <h1 class="text-xl font-extrabold text-center text-blue-400">NOMBRE EMPRESA</h1>
+        </div>
+
+        <!-- Enlaces de Navegación -->
+        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+            
+            {% comment %} Estos son los iconos que usaremos para los enlaces. Usamos SVG para mayor calidad. {% endcomment %}
+            {% with base_classes="flex items-center p-3 rounded-lg text-sm font-medium hover:bg-gray-700 transition duration-150" %}
+            
+            <a href="{% url 'dashboard' %}" class="{{ base_classes }} {% if request.path == '/' %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Dashboard -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7-4h14"></path></svg>
+                Dashboard
             </a>
-            <!-- Aquí puedes añadir más enlaces de navegación si lo deseas -->
-            <a href="{% url 'sales-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Ventas</a>
-            <a href="{% url 'product-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Productos</a>
-            <a href="{% url 'employee-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Empleados</a>
-            <a href="{% url 'customer-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Clientes</a>
-            <a href="{% url 'suppliers-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Proveedores</a>
-            <a href="{% url 'post-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Cargos</a>
-            <a href="{% url 'category-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Categorias</a>
-            <a href="{% url 'movement-inventory-list' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Movimientos de Inventario</a>
-        </div>
-        <div>
-            <!-- Ejemplo de enlaces para Login/Logout -->
-            <a href="{% url 'login' %}" class="text-gray-600 hover:text-blue-500 transition-colors mr-2">Iniciar Sesión</a>
-            <a href="{% url 'logout' %}" class="text-gray-600 hover:text-blue-500 transition-colors">Cerrar Sesión</a>
-        </div>
-    </nav>
+            
+            <a href="{% url 'sales-list' %}" class="{{ base_classes }} {% if 'sales' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Ventas -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2l-2 3h12l-2-3h2a2 2 0 002-2V9z"></path></svg>
+                Ventas
+            </a>
+            
+            <a href="{% url 'product-list' %}" class="{{ base_classes }} {% if 'product' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Productos -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Productos
+            </a>
 
-    <!-- Contenido principal -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- El bloque 'content' es el área donde se inyectará el contenido de las plantillas hijas -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
+            <a href="{% url 'movement-inventory-list' %}" class="{{ base_classes }} {% if 'movement' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Movimientos -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Movimientos de Inventario
+            </a>
+            
+            <hr class="border-gray-700 my-2">
+
+            <a href="{% url 'customer-list' %}" class="{{ base_classes }} {% if 'customer' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Clientes -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 13H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Clientes
+            </a>
+
+            <a href="{% url 'suppliers-list' %}" class="{{ base_classes }} {% if 'suppliers' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Proveedores -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                Proveedores
+            </a>
+            
+            <hr class="border-gray-700 my-2">
+
+            <a href="{% url 'employee-list' %}" class="{{ base_classes }} {% if 'employee' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Empleados -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                Empleados
+            </a>
+            
+            <a href="{% url 'post-list' %}" class="{{ base_classes }} {% if 'post' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Cargos -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.5v11.5m6-6l-6 6-6-6m12-3l-6-6-6 6"></path></svg>
+                Cargos
+            </a>
+            
+            <a href="{% url 'category-list' %}" class="{{ base_classes }} {% if 'category' in request.path %}bg-gray-700 text-blue-300{% else %}text-gray-300{% endif %}">
+                <!-- Icono Categorias -->
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                Categorias
+            </a>
+
+            {% endwith %}
+
+        </nav>
+        
+        <!-- Pie de la Barra Lateral (Login/Logout) -->
+        <div class="p-4 border-t border-gray-700 mt-auto">
+            {% comment %} Aquí necesitarás lógica de Django para saber si el usuario está autenticado. Asumo que tienes enlaces 'login' y 'logout'. {% endcomment %}
+            <a href="{% url 'login' %}" class="block p-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-blue-600 hover:text-white transition duration-150">
+                Iniciar Sesión
+            </a>
+            <a href="{% url 'logout' %}" class="block p-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-red-600 hover:text-white transition duration-150 mt-1">
+                Cerrar Sesión
+            </a>
+        </div>
+    </aside>
+
+    <!-- 2. CONTENIDO PRINCIPAL - Ocupa el espacio restante y permite scroll vertical -->
+    <main class="main-content flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-100">
+        
+        <!-- Contenedor del Título de la Página -->
+        <header class="mb-6 pb-2 border-b border-gray-300">
+            <h1 class="text-3xl font-bold text-gray-900">{% block title_header %}Dashboard{% endblock %}</h1>
+        </header>
+
+        <!-- Aquí se inyecta el contenido específico de cada página (Ventas, Productos, Dashboard) -->
+        <div class="bg-white p-6 rounded-xl shadow-lg">
             {% block content %}
             <!-- El contenido de las vistas se insertará aquí -->
             {% endblock %}
         </div>
+        
+        <!-- Pie de página (se mantiene al final del contenido principal) -->
+        <footer class="text-gray-600 p-4 text-center mt-8 border-t border-gray-300">
+            <p class="text-sm">&copy; 2025 Sistema de Ventas. Todos los derechos reservados.</p>
+        </footer>
+        
     </main>
-
-    <!-- Pie de página (opcional) -->
-    <footer class="bg-gray-800 text-white p-4 text-center mt-8">
-        <p>&copy; 2025 Sistema de Ventas. Todos los derechos reservados.</p>
-    </footer>
 
 </body>
 </html>

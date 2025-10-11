@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Panel de Control{% endblock %}
+{% block title_header %}Panel de Control de Ventas{% endblock %}
+
+{% block content %}
+
+<!-- 1. INCLUIR CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+<!-- 2. CONTENIDO PRINCIPAL -->
+<div class="space-y-8">
+    
+    <!-- 1. INDICADORES CLAVE (KPIs) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Tarjeta 1: Total Vendido Semanal -->
+        <div class="bg-blue-600 text-white p-6 rounded-xl shadow-lg transform hover:scale-[1.02] transition duration-300">
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-semibold uppercase opacity-80">Total Venta Semanal</span>
+                <!-- Icono de Billetera -->
+                <svg class="w-8 h-8 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-3 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            </div>
+            <p class="text-4xl font-extrabold mt-2">$ {{ weekly_total|floatformat:2 }}</p>
+            <p class="text-sm opacity-90 mt-1">Desde el {{ start_date|date:"d M" }} hasta el {{ end_date|date:"d M" }}</p>
+        </div>
+
+        <!-- Tarjeta 2: Ventas del Día de Hoy -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 transform hover:scale-[1.02] transition duration-300">
+            <div class="flex items-center justify-between text-gray-700">
+                <span class="text-sm font-semibold uppercase">Ventas de Hoy</span>
+                <!-- Icono de Gráfico -->
+                <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            </div>
+            <!-- CAMBIO CLAVE: Usamos la nueva variable today_sales_total -->
+            <p class="text-4xl font-extrabold text-gray-900 mt-2">$ {{ today_sales_total|floatformat:2|default:"0.00" }}</p>
+            <p class="text-sm text-gray-500 mt-1">Total de ingresos en {{ end_date|date:"l" }}</p>
+        </div>
+
+        <!-- Tarjeta 3: Clientes Activos SEMANAL -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 transform hover:scale-[1.02] transition duration-300">
+            <div class="flex items-center justify-between text-gray-700">
+                <span class="text-sm font-semibold uppercase">Clientes Activos</span>
+                <!-- Icono de Usuarios -->
+                <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 13H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <!-- CAMBIO CLAVE: Usamos la nueva variable active_clients_count -->
+            <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ active_clients_count|default:"0" }}</p>
+            <p class="text-sm text-gray-500 mt-1">Clientes con compras esta semana</p>
+        </div>
+
+    </div>
+
+    <!-- 2. GRÁFICO DE RENDIMIENTO DIARIO -->
+    <div class="max-w-5xl mx-auto"> 
+        <!-- Hemos añadido max-h-96 y style="position: relative;" al contenedor principal del gráfico -->
+        <div class="bg-white p-6 rounded-xl shadow-lg mt-8 max-h-96" style="position: relative;"> 
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Ventas Diarias (Últimos 7 Días)</h2>
+            <!-- Cambiamos h-72 a min-h-72 y w-full (o podemos omitir la altura si el contenedor la tiene fija) -->
+            <canvas id="dailySalesChart" class="w-full min-h-72"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<!-- 3. BLOQUE DE SCRIPT (CON CORRECCIÓN DE ASPECT RATIO) -->
+<script>
+    // 1. INYECCIÓN DE DATOS
+    // Se usa | safe para evitar problemas de escape con el JSON
+    const chartLabels = JSON.parse('{{ chart_labels | safe }}'); 
+    const chartData = JSON.parse('{{ chart_data | safe }}');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const canvasElement = document.getElementById('dailySalesChart');
+
+        if (chartLabels.length > 0 && canvasElement) {
+            
+            const data = {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Total Vendido ($)',
+                    data: chartData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.7)', 
+                    borderColor: 'rgba(37, 99, 235, 1)',      
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    tension: 0.4,
+                    fill: true
+                }]
+            };
+
+            const config = {
+                type: 'bar', 
+                data: data,
+                options: {
+                    responsive: true,
+                    // SOLUCIÓN: Desactiva la relación de aspecto para que Chart.js respete la altura CSS (h-72)
+                    maintainAspectRatio: false, 
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Rendimiento de la última semana'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Ingresos Totales ($)'
+                            },
+                            ticks: {
+                                callback: function(value, index, ticks) {
+                                    if (typeof value === 'number') {
+                                        return '$' + value.toLocaleString('es-CL', { minimumFractionDigits: 2 });
+                                    }
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Crea el gráfico
+            new Chart(canvasElement, config);
+        
+        } else if (canvasElement) {
+            // Manejo de 'No hay datos'
+            const chartContainer = canvasElement.parentNode;
+            if (chartContainer.querySelector('canvas') === canvasElement) {
+                canvasElement.remove(); 
+            }
+            const messageDiv = document.createElement('div');
+            messageDiv.className = "text-center text-gray-500 py-10";
+            messageDiv.textContent = "¡No hay datos de ventas para mostrar en el gráfico!";
+            chartContainer.appendChild(messageDiv);
+        }
+    });
+</script>
+{% endblock content %}
