@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, RedirectView
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterForm
 
 class RegisterView(CreateView):
@@ -8,3 +9,8 @@ class RegisterView(CreateView):
     form_class = RegisterForm
     template_name = 'users/register.html'
     success_url = reverse_lazy('login')
+
+
+class UserRedirectView(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse_lazy('dashboard')

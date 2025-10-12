@@ -1,21 +1,85 @@
-{% extends "base.html" %}
-{% load tailwind_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Sistema de Ventas</title>
+    <!-- Carga de Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fuente Inter de Google Fonts (opcional, si no está en la base) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gris claro */
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
 
-{% block content %}
-<div class="container mx-auto w-1/3">
-    <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Iniciar sesión</h1>
-    <form action="" method="post" class="my-8">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button
-            class="inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500" 
-            type="submit">
-            Login
-        </button>
-    </form>
-    <p class="text-center text-sm text-gray-500 mt-4">
-        ¿No tienes una cuenta?
-        <a class="underline" href="{% url 'register' %}">Registrate</a>
-    </p>
-</div>
-{% endblock content %}
+    <div class="w-full max-w-md">
+        
+        <!-- Tarjeta de Login -->
+        <div class="bg-white p-8 md:p-10 rounded-xl shadow-2xl border border-gray-100 transform transition duration-500 hover:shadow-3xl">
+            
+            <div class="text-center mb-8">
+                <!-- Icono o Logo -->
+                <svg class="w-16 h-16 mx-auto text-blue-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+                <h1 class="text-3xl font-extrabold text-gray-800">Acceso al Sistema</h1>
+                <p class="text-gray-500 mt-1">Ingresa tus credenciales para continuar.</p>
+            </div>
+
+            <!-- Manejo de Errores de Autenticación -->
+            {% if form.errors %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                    <strong class="font-bold">Error:</strong>
+                    <span class="block sm:inline"> Nombre de usuario o contraseña incorrectos.</span>
+                </div>
+            {% endif %}
+
+            <!-- Formulario de Django -->
+            <form method="post" action="{% url 'users:login' %}" class="space-y-6">
+                {% csrf_token %}
+                
+                {{ form|crispy }} 
+
+                <!-- Botón de Enviar -->
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition duration-150 shadow-lg hover:shadow-xl">
+                    Iniciar Sesión
+                </button>
+
+                <!-- Campo oculto para manejar la redirección post-login -->
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                {% else %}
+                    <!-- Redirige al home de usuarios (que a su vez va al dashboard) -->
+                    <input type="hidden" name="next" value="{% url 'users:home' %}" />
+                {% endif %}
+            </form>
+            
+            <!-- Enlaces de Ayuda y Registro (Actualizado) -->
+            <div class="mt-6 text-center text-sm space-y-2">
+                <p class="text-gray-600">
+                    <a href="#" class="link-style">¿Olvidaste tu contraseña? (Pendiente)</a>
+                </p>
+                <p class="text-gray-600">
+                    ¿No tienes una cuenta? 
+                    <a href="{% url 'users:register' %}" class="link-style">Crear una cuenta</a>
+                </p>
+            </div>
+
+        </div>
+        
+        <!-- Footer o Branding -->
+        <p class="text-center text-gray-500 text-sm mt-6">
+            &copy; 2025 Sistema de Ventas. Todos los derechos reservados.
+        </p>
+
+    </div>
+</body>
+</html>
