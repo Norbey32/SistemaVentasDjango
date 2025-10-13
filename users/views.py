@@ -8,7 +8,7 @@ class RegisterView(CreateView):
     model = User
     form_class = RegisterForm
     template_name = 'users/register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('users:login')
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
