@@ -6,49 +6,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario - Sistema de Ventas</title>
-    <!-- Carga de Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Fuente Inter de Google Fonts (opcional, si no está en la base) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Gris claro */
+            background-color: #f3f4f6;
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
 
     <div class="w-full max-w-lg">
-        
-        <!-- Tarjeta de Registro -->
         <div class="bg-white p-8 md:p-10 rounded-xl shadow-2xl border border-gray-100 transform transition duration-500 hover:shadow-3xl">
             
             <div class="text-center mb-8">
-                <!-- Icono o Logo -->
                 <svg class="w-16 h-16 mx-auto text-blue-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM12 14c-1.474 0-2.827.604-3.803 1.58C7.197 16.556 6 18.064 6 20h12c0-1.936-1.197-3.444-2.197-4.42C14.827 14.604 13.474 14 12 14z"></path>
                 </svg>
                 <h1 class="text-3xl font-extrabold text-gray-800">Registro de Usuario</h1>
                 <p class="text-gray-500 mt-1">Crea tu cuenta para acceder al sistema.</p>
             </div>
-
-            <!-- Formulario de Registro -->
-            <!-- La acción se deja vacía (action="") para que apunte a la misma URL de la vista RegisterView -->
             <form action="" method="post" class="space-y-6">
                 {% csrf_token %}
-                
-                <!-- Uso de crispy forms para aplicar estilos rápidamente -->
                 {{ form|crispy }} 
-                
-                <!-- Botón de Enviar -->
                 <button type="submit" 
                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50 transition duration-150 shadow-lg hover:shadow-xl">
                     Registrarse
                 </button>
             </form>
-            
-            <!-- Enlace para Volver al Login -->
             <div class="mt-6 text-center text-sm">
                 <p class="text-gray-600">
                     ¿Ya tienes una cuenta? 
@@ -57,8 +43,6 @@
             </div>
 
         </div>
-        
-        <!-- Footer o Branding -->
         <p class="text-center text-gray-500 text-sm mt-6">
             &copy; 2025 Sistema de Ventas. Todos los derechos reservados.
         </p>

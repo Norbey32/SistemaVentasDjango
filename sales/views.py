@@ -7,9 +7,8 @@ from django.shortcuts import render, redirect
 from .models import Sales, SalesDetail
 from .forms import SalesForm, SalesDetailFormSet
 
-# Tasa de impuesto constante 
+
 TAX_RATE = Decimal('0.19') 
-# Número de lugares decimales
 DECIMAL_PLACES = 2
 
 # --- LÓGICA DE NEGOCIO REUTILIZABLE ---

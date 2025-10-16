@@ -4,45 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Sistema de Ventas - Dashboard{% endblock %}</title>
-    <!-- Incluye el CDN de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilos base para Inter y fondo general */
         body {
             font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             background-color: #f1f5f9;
         }
-        /* Clase para el enlace activo en la barra lateral */
         .sidebar-link.active {
-            background-color: #1e40af; /* Azul oscuro para fondo */
+            background-color: #1e40af;
             color: #ffffff;
             border-radius: 0.5rem;
         }
-
-        /* --- Estilo personalizado para un scrollbar sutil en el sidebar --- */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 8px; /* Ancho de la barra de desplazamiento */
+            width: 8px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background-color: #4b5563; /* Gris más oscuro para el 'pulgar' */
+            background-color: #4b5563; 
             border-radius: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1f2937; /* Gris más claro para la 'pista' (fondo) */
+            background: #1f2937; 
         }
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col min-h-screen">
-
-    <!-- 1. Barra Lateral (Sidebar) - Fija y con Scroll -->
     <aside id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col p-4 shadow-xl fixed h-full overflow-y-auto z-50 custom-scrollbar">
-        
-        <!-- Logo y Nombre de la Empresa (VendiPlus) -->
         <a href="{% url 'dashboard' %}" class="flex items-center space-x-3 p-2 mb-6 border-b border-gray-700 pb-4">
-            <!--
-                *** ESPACIO PARA TU LOGO ***
-                Reemplaza 'YOUR_LOGO_URL_HERE' con la URL de tu logo.
-            -->
             <img 
                 id="site-logo"
                 src="https://c1.klipartz.com/pngpicture/649/933/sticker-png-ecommerce-logo-online-shopping-retail-sales-online-and-offline-shopping-cart-internet-online-auction.png" 
@@ -50,91 +37,56 @@
                 class="w-10 h-10 rounded-lg object-contain bg-white p-1"
                 onerror="this.onerror=null; this.src='https://c1.klipartz.com/pngpicture/649/933/sticker-png-ecommerce-logo-online-shopping-retail-sales-online-and-offline-shopping-cart-internet-online-auction.png'"
             >
-            <!-- Nombre del Sistema -->
             <span class="text-xl font-extrabold text-blue-300 tracking-widest">VendiPlus</span>
         </a>
-
-        <!-- Navegación Principal: ocupa el espacio restante y permite el scroll si es necesario -->
         <nav class="flex-grow space-y-2">
-            
-            <!-- Dashboard/Panel -->
             <a href="{% url 'dashboard' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors active">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1h-2a1 1 0 001 1h2a1 1 0 001 1h-2a1 1 0 001 1z"></path></svg>
                 Dashboard
             </a>
-
-            <!-- Ventas -->
             <a href="{% url 'sales-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0h2m4 0v-6a2 2 0 00-2-2h-2m2 2h2m0 0a2 2 0 100-4 2 2 0 000 4z"></path></svg>
                 Ventas
             </a>
-
-            <!-- Productos -->
             <a href="{% url 'product-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 Productos
             </a>
-
-            <!-- Movimientos de Inventario -->
             <a href="{% url 'movement-inventory-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10h16V7M4 7h16M4 7L2 9m18-2l2 2m-2-2v4m-2 4v4m0 0V8m0 4l-4 4-4-4"></path></svg>
                 Movimientos de Inventario
             </a>
-
-            <!-- Clientes -->
             <a href="{% url 'customer-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2m0 2h-2m0-4.5h-4.5m4.5 4.5h-4.5m-1 0a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 Clientes
             </a>
-
-            <!-- Proveedores -->
             <a href="{% url 'suppliers-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2h-1m4 0h2m-2 2h-4a2 2 0 01-2-2V6a2 2 0 012-2h4a2 2 0 012 2v2m-6 4l-2 2m-2-2l-2 2"></path></svg>
                 Proveedores
             </a>
-
-            <!-- Empleados -->
             <a href="{% url 'employee-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 Empleados
             </a>
-
-            <!-- Cargos/Puestos -->
             <a href="{% url 'post-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-1.12-8.588-3.132M21 21v-2a4 4 0 00-3.376-3.803 9.92 9.92 0 00-2.072-.257C12.822 14.364 12 15 12 15s-.822-.636-1.552-1.061M21 21h-2m2 0h2m-2 0v-2m2 2v2m-2-2v-2"></path></svg>
                 Cargos
             </a>
-            
-            <!-- Categorias -->
             <a href="{% url 'category-list' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10m0 0l-3-3m3 3l-3 3M7 7h10m0 0l-3-3m3 3l-3 3"></path></svg>
                 Categorias
             </a>
 
         </nav>
-
-        <!-- Sección de Usuario/Sesión (parte inferior) -->
         <div class="mt-auto pt-4 border-t border-gray-700 space-y-2">
-            
-            <!-- Iniciar Sesión (Sigue siendo un enlace simple) -->
             <a href="{% url 'users:login' %}" class="sidebar-link flex items-center p-3 text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                 Iniciar Sesión
             </a>
-            
-            <!--
-                *** CERRAR SESIÓN (LOGOUT SEGURO) ***
-                Se reemplaza el enlace por un formulario que se envía con POST para cumplir con las normas de seguridad (CSRF).
-                El JavaScript al final se encarga de que, al hacer clic, se envíe este formulario.
-            -->
-            <!-- Verifica que el usuario esté autenticado antes de mostrar el botón -->
         {% if user.is_authenticated %}
             <li class="nav-item">
-                <!-- El formulario debe envolver el elemento de cierre de sesión -->
                 <form method="POST" action="{% url 'users:logout' %}" class="w-full">
                     {% csrf_token %}
-                    
-                    <!-- Estiliza este botón para que parezca un elemento de menú -->
                     <button type="submit" 
                             class="nav-link w-full text-left py-2 px-4 transition-colors duration-150 hover:bg-red-700/50 rounded-lg">
                         <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
@@ -144,33 +96,21 @@
         {% endif %}
         </div>
     </aside>
-
-    <!-- 2. Contenido Principal (Main Content) - con Margen y Flexbox vertical -->
     <div id="content-wrapper" class="flex-1 ml-64 flex flex-col"> 
-        
-        <!-- Contenido principal con scroll interno -->
         <main class="flex-grow p-6 overflow-y-auto">
-             <!-- Barra superior dentro del contenido para el título de la página/sección -->
             <header class="bg-white shadow-md p-6 rounded-xl mb-6">
                 <h1 class="text-3xl font-bold text-gray-800">{% block header_title %}Panel de Control de Ventas{% endblock %}</h1>
             </header>
-
-            <!-- Área donde se inyectará el contenido de las plantillas hijas -->
             <div class="bg-white p-6 rounded-xl shadow-lg min-h-[70vh]">
                 {% block content %}
-                <!-- El contenido de las vistas se insertará aquí -->
                 <p class="text-gray-600">Este es el área principal de contenido. El pie de página inferior se mantiene fijo incluso si el contenido en esta área es pequeño.</p>
                 {% endblock %}
             </div>
         </main>
-
-        <!-- 3. Pie de página fijo en la parte inferior del viewport -->
         <footer class="bg-gray-800 text-white p-4 text-center text-sm border-t border-gray-700 mt-auto">
             <p>&copy; 2025 Sistema de Ventas. Todos los derechos reservados.</p>
         </footer>
     </div>
-
-    <!-- 4. Scripts para manejar el estado activo de la barra lateral -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const currentPath = window.location.pathname;
@@ -179,22 +119,17 @@
             function shouldBeActive(linkPath, currentPath) {
                 const normalizedCurrentPath = currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
                 const normalizedLinkPath = linkPath.replace(/\/$/, "");
-
-                // Excepción para la ruta raíz (Dashboard)
+                
                 if (normalizedLinkPath === '') {
                     return normalizedCurrentPath === '/' || normalizedCurrentPath === normalizedLinkPath;
                 }
-                
-                // Si la ruta actual contiene la ruta del link (para subpáginas)
-                // y no es solo la ruta raíz
                 return normalizedCurrentPath.includes(normalizedLinkPath) && normalizedLinkPath !== '/';
             }
 
             links.forEach(link => {
                 link.classList.remove('active'); 
                 const href = link.getAttribute('href');
-                
-                // Si el elemento es un enlace directo
+
                 if (href) {
                     const linkPath = href.startsWith('{%') ? '/' : href; 
                     if (shouldBeActive(linkPath, currentPath)) {
@@ -202,10 +137,7 @@
                     }
                 }
                 
-                // Si el elemento es un botón dentro del formulario de logout
                 if (link.tagName === 'BUTTON' && link.closest('#logout-form')) {
-                    // El botón de logout no se marca como activo, solo lo ignoramos aquí.
-                    // Si el usuario está en la vista de logout, se maneja por la redirección.
                 }
             });
         });

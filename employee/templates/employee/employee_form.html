@@ -31,8 +31,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
-            <!-- Iteración de los campos del formulario. Los campos ya tienen estilos de forms.py -->
             {% for field in form %}
                 <div class="mb-4">
                     <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1">
@@ -56,12 +54,9 @@
             {% endfor %}
 
             <div class="flex justify-end space-x-4 pt-6 border-t border-gray-100">
-                <!-- Botón Cancelar -->
                 <a href="{% url 'employee-list' %}" class="px-5 py-2 text-gray-600 font-semibold rounded-lg shadow-sm hover:bg-gray-100 transition-colors">
                     Cancelar
                 </a>
-
-                <!-- Botón Guardar con estilo azul uniforme -->
                 <button type="submit" class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300">
                     Guardar Empleado
                 </button>
