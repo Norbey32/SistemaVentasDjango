@@ -7,17 +7,21 @@ from datetime import timedelta
 from sales.models import Sales 
 from customer.models import Customer
 import json 
+from django.contrib.auth.mixins import LoginRequiredMixin 
 
-class DashboardHomeView(View):
+class DashboardHomeView(LoginRequiredMixin, View):
     template_name = 'dashboard/dashboard_home.html'
 
     def get_context_data(self):
         now = timezone.localtime(timezone.now())
-        end_date = now.date() 
+        today_date = now.date() 
+        end_date = today_date 
         start_date = end_date - timedelta(days=6) 
 
         FECHA_CAMPO = 'sale_date'
 
+        # --- Gráfico de Ventas Semanales ---
+        
         daily_sales_qs = Sales.objects.filter(
             **{f'{FECHA_CAMPO}__date__range': [start_date, end_date]}
         ).annotate(
@@ -28,6 +32,7 @@ class DashboardHomeView(View):
 
         sales_data = {}
         for sale in daily_sales_qs:
+            # Usamos el formato %d %b (Ej: 17 Oct) para la clave
             day_str = sale['day'].strftime('%d %b') 
             
             try:
@@ -36,6 +41,7 @@ class DashboardHomeView(View):
                 total = 0.00
                 
             sales_data[day_str] = total
+            
         chart_labels = []
         chart_data = []
         
@@ -49,22 +55,25 @@ class DashboardHomeView(View):
             
             current_date += timedelta(days=1)
 
-        # --- INICIO CÁLCULO DE KPIS ---
+        # --- INICIO CÁLCULO DE KPIS CORREGIDO ---
 
-        # Cálculo del Total Vendido Semanal
+        # 1Cálculo del Total Vendido Semanal
         weekly_total = Sales.objects.filter(
             **{f'{FECHA_CAMPO}__date__range': [start_date, end_date]}
         ).aggregate(
             weekly_total_sum=Sum('total')
         )['weekly_total_sum'] or 0.00 
 
-        # Cálculo del Total Vendido HOY 
-        start_of_today = timezone.make_aware(timezone.datetime(end_date.year, end_date.month, end_date.day))
-        end_of_today = start_of_today + timedelta(days=1)
+        # CÁLCULO DEL TOTAL VENDIDO HOY
+        
+        # Obtenemos el inicio y el fin del día actual con la zona horaria correcta
+        start_of_today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_of_today = now.replace(hour=23, minute=59, second=59, microsecond=999999)
 
+        # Filtramos por el rango de tiempo exacto del día de hoy
         today_sales_total = Sales.objects.filter(
             sale_date__gte=start_of_today,
-            sale_date__lt=end_of_today
+            sale_date__lte=end_of_today 
         ).aggregate(Sum('total'))['total__sum'] or 0.00
         
         # Cálculo de Clientes Activos Semanales
@@ -76,8 +85,8 @@ class DashboardHomeView(View):
             'chart_labels': json.dumps(chart_labels), 
             'chart_data': json.dumps([float(d) for d in chart_data]), 
             
-            'weekly_total': weekly_total, 
-            'today_sales_total': today_sales_total,
+            'weekly_total': round(weekly_total, 2) if weekly_total else 0.00, 
+            'today_sales_total': round(today_sales_total, 2) if today_sales_total else 0.00,
             'active_clients_count': active_clients_count,
             
             'start_date': start_date,
