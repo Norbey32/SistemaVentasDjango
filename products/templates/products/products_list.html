@@ -28,8 +28,8 @@
                 {% for product in object_list %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
                     <td class="py-3 px-6 text-left whitespace-nowrap">{{ product.name }}</td>
-                    <td class="py-3 px-6 text-left">${{ product.price }}</td>
-                    <td class="py-3 px-6 text-left">{{ product.stock }}</td>
+                    <td class="py-3 px-6 text-left">${{ product.unit_price }}</td>
+                    <td class="py-3 px-6 text-left">{{ product.current_stock }}</td>
                     <td class="py-3 px-6 text-left">{{ product.category.name }}</td>
                     <td class="py-3 px-6 text-left">{{ product.supplier.name }}</td>
                     <td class="py-3 px-6 text-center">

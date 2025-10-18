@@ -20,7 +20,7 @@ class ProductCreateView(CreateView):
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'products/product_form.html'
+    template_name = 'products/products_form.html'
     success_url = reverse_lazy('product-list')
 
 # Vista para eliminar un producto

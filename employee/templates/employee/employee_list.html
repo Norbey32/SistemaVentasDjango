@@ -26,7 +26,7 @@
             <tbody class="text-gray-600 text-sm font-light">
                 {% for employee in object_list %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ employee.name }} {{ employee.last_name }}</td>
                     <td class="py-3 px-6 text-left">{{ employee.post.name }}</td>
                     <td class="py-3 px-6 text-left">{{ employee.phone_number }}</td>
                     <td class="py-3 px-6 text-left">{{ employee.email }}</td>
