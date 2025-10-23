@@ -21,15 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'default_secret_key_para_pruebas')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+SECRET_KEY = os.environ.get('SECRET_KEY', '6y@*$q(5d4b&b_jsk-wu*5up0qo3#(jc&q49+#%_^2fi@v&947')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -90,24 +84,17 @@ WSGI_APPLICATION = 'sistema_ventas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sistema_ventas_db',
-        'USER': 'postgres',
-        'PASSWORD': '0987',    
-        'HOST': 'localhost',
-        'PORT': '5432',
+if os.environ.get('POSTGRES_USER'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('POSTGRES_DB', 'sistema_ventas_db'),
+            'USER': os.environ.get('POSTGRES_USER', 'norbey_user'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '0987'),
+            'HOST': 'db', # ¡IMPORTANTE! Este es el nombre del servicio en docker-compose
+            'PORT': '5432',
+        }
     }
-}
-
-# Sobrescribe la DB con la URL de Render si está disponible
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=True
-    )
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

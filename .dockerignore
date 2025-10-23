@@ -1,0 +1,19 @@
+# Entorno de Python
+.venv
+venv
+__pycache__
+
+# Ignorar archivos específicos de tu OS
+.DS_Store
+*.pyc
+
+# Ignorar el propio Docker Compose y Dockerfile
+Dockerfile
+docker-compose.yml
+
+# Ignorar la DB local
+db.sqlite3
+
+# Ignorar logs y media local
+/logs
+/media

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: sistema_ventas_db # Nombre de la DB
+      POSTGRES_USER: norbey_user     # Usuario
+      POSTGRES_PASSWORD: 0987 # Contraseña (¡Cámbiala!)
+    restart: always
+
+  web:
+    build: .
+    container_name: django_app
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000" # Comando para desarrollo
+    # Para producción, usa el CMD definido en el Dockerfile:
+    # command: sh -c "gunicorn <nombre_proyecto>.wsgi:application --bind 0.0.0.0:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      SECRET_KEY: '6y@*$q(5d4b&b_jsk-wu*5up0qo3#(jc&q49+#%_^2fi@v&947' # Reemplaza
+      DEBUG: 'True'
+      ALLOWED_HOSTS: '*'
+      # Las variables de conexión a la DB se establecen automáticamente
+      # ya que Django puede usar el nombre del servicio ('db') como host.
+
+volumes:
+  postgres_data:

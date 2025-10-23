@@ -2,6 +2,7 @@
 # Editar en https://www.toptal.com/developers/gitignore?templates=django
 
 ### Django ###
+.env
 *.registro
 *.olla
 *.pyc
