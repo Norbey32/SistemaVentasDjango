@@ -25,7 +25,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - localhost
+      - db
     environment:
       SECRET_KEY: '6y@*$q(5d4b&b_jsk-wu*5up0qo3#(jc&q49+#%_^2fi@v&947' # Reemplaza
       DEBUG: 'True'
