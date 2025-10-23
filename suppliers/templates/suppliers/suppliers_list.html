@@ -26,8 +26,8 @@
                 {% for supplier in object_list %}
                 <tr class="border-b border-gray-200 hover:bg-gray-100">
                     <td class="py-3 px-6 text-left whitespace-nowrap">{{ supplier.name }}</td>
-                    <td class="py-3 px-6 text-left">{{ supplier.contact_person }}</td>
-                    <td class="py-3 px-6 text-left">{{ supplier.phone_number }}</td>
+                    <td class="py-3 px-6 text-left">{{ supplier.contact }}</td>
+                    <td class="py-3 px-6 text-left">{{ supplier.phone }}</td>
                     <td class="py-3 px-6 text-center">
                         <div class="flex item-center justify-center">
                             <a href="{% url 'suppliers-update' supplier.pk %}" class="w-4 mr-2 transform hover:text-blue-500 hover:scale-110 transition-transform" title="Editar">

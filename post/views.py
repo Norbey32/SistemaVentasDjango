@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Post
-from .forms import PostForm  # Asegúrate de crear este formulario en forms.py
+from .forms import PostForm
 
 # Vista para listar todos los puestos de trabajo.
 class PostListView(ListView):
@@ -14,7 +14,7 @@ class PostCreateView(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'post/post_form.html'
-    success_url = reverse_lazy('post-list')  # Redirige a la lista de puestos
+    success_url = reverse_lazy('post-list')
 
 # Vista para actualizar un puesto de trabajo existente.
 class PostUpdateView(UpdateView):

@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Customer
-from .forms import CustomerForm # Asegúrate de crear este formulario en forms.py
+from .forms import CustomerForm
 
 # Vista para listar todos los clientes.
 class CustomerListView(ListView):
@@ -14,7 +14,7 @@ class CustomerCreateView(CreateView):
     model = Customer
     form_class = CustomerForm
     template_name = 'customer/customer_form.html'
-    success_url = reverse_lazy('customer-list') # Redirige a la lista de clientes
+    success_url = reverse_lazy('customer-list')
 
 # Vista para actualizar un cliente existente.
 class CustomerUpdateView(UpdateView):

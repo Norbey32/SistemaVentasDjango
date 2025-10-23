@@ -32,8 +32,8 @@
                             #{{ sale.id }}
                         </a>
                     </td>
-                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ sale.customer.nombre }} {{ sale.customer.apellido }}</td>
-                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ sale.employee.nombre }} {{ sale.employee.apellido }}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ sale.customer.name }} {{ sale.customer.last_name }}</td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ sale.employee.name }} {{ sale.employee.last_name }}</td>
                     <td class="py-3 px-6 text-left">{{ sale.sale_date|date:"d M Y" }}</td>
                     <td class="py-3 px-6 text-left">${{ sale.total }}</td>
                     <td class="py-3 px-6 text-center">
