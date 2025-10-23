@@ -8,7 +8,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       POSTGRES_DB: sistema_ventas_db # Nombre de la DB
-      POSTGRES_USER: norbey_user     # Usuario
+      POSTGRES_USER: postgres     # Usuario
       POSTGRES_PASSWORD: 0987 # Contraseña (¡Cámbiala!)
     restart: always
 

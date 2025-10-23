@@ -89,7 +89,7 @@ if os.environ.get('POSTGRES_USER'):
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('POSTGRES_DB', 'sistema_ventas_db'),
-            'USER': os.environ.get('POSTGRES_USER', 'norbey_user'),
+            'USER': os.environ.get('POSTGRES_USER', 'postgres'),
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD', '0987'),
             'HOST': 'db', # ¡IMPORTANTE! Este es el nombre del servicio en docker-compose
             'PORT': '5432',
