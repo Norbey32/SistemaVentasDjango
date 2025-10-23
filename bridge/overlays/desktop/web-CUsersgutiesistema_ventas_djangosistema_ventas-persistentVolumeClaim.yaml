@@ -1,0 +1,9 @@
+#! web-C:\Users\gutie\sistema_ventas_django\sistema_ventas-persistentVolumeClaim.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: web-c--users-gutie-sistema-ventas-django-sistema-ventas
+    namespace: sistema-ventas
+spec:
+    storageClassName: "hostpath" # see docker/desktop-storage-provisioner

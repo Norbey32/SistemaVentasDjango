@@ -1,0 +1,60 @@
+#! web-deployment.yaml
+# Generated code, do not edit
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: web
+    namespace: sistema-ventas
+    labels:
+        com.docker.compose.project: sistema_ventas
+        com.docker.compose.service: web
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            com.docker.compose.project: sistema_ventas
+            com.docker.compose.service: web
+    strategy:
+        type: Recreate
+    template:
+        metadata:
+            labels:
+                com.docker.compose.project: sistema_ventas
+                com.docker.compose.service: web
+                com.docker.compose.network.default: "true"
+        spec:
+            containers:
+                - name: django-app
+                  image: sistema_ventas-web
+                  imagePullPolicy: IfNotPresent
+                  args:
+                    - sh
+                    - -c
+                    - python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+                  env:
+                    - name: ALLOWED_HOSTS
+                      value: "*"
+                    - name: DEBUG
+                      value: "True"
+                    - name: POSTGRES_DB
+                      value: "sistema_ventas_db"
+                    - name: POSTGRES_PASSWORD
+                      value: "0987"
+                    - name: POSTGRES_PORT
+                      value: "5432"
+                    - name: POSTGRES_USER
+                      value: "postgres"
+                    - name: PROJECT_NAME
+                      value: "sistema_ventas"
+                    - name: SECRET_KEY
+                      value: "6y@*(5d4b&b_jsk-wu*5up0qo3#(jc&q49+#%_^2fi@v&947"
+                  ports:
+                    - name: web-8000
+                      containerPort: 8000
+                  volumeMounts:
+                    - name: usr-src-app
+                      mountPath: /usr/src/app
+            volumes:
+                - name: usr-src-app
+                  hostPath:
+                    path: C:\Users\gutie\sistema_ventas_django\sistema_ventas

@@ -1,16 +1,28 @@
-# Usa una imagen base de Python oficial
-FROM python:3.10-slim
+# Usa la imagen oficial de Ubuntu como base
+FROM ubuntu:22.04
 
-# Establece el directorio de trabajo dentro del contenedor
-WORKDIR /usr/src/app
+# Evita preguntas interactivas durante la instalación
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Instala dependencias del sistema operativo (necesarias para psycopg2)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Instala paquetes esenciales (Python, pip, PostgreSQL cliente, build-essential)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-dev \
     postgresql-client \
+    build-essential \
+    libpq-dev \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia los archivos de requerimientos e instala dependencias de Python
+# Establece python3 como el comando predeterminado de python
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+# Establece el directorio de trabajo
+WORKDIR /usr/src/app
+
+# Copia los archivos de requerimientos e instala las dependencias de Python
 COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -18,9 +30,9 @@ RUN pip install -r requirements.txt
 # Copia el resto del código de la aplicación
 COPY . .
 
-# Expone el puerto donde Gunicorn correrá
+# Expone el puerto 8000
 EXPOSE 8000
 
-# Comando para recolectar estáticos y luego iniciar Gunicorn
-# Reemplaza <nombre_proyecto> con el nombre real de tu carpeta (ej. sistema_ventas)
+# Comando para iniciar la aplicación (ejecuta collectstatic y luego Gunicorn)
+# ¡REEMPLAZA <nombre_proyecto> con el nombre de tu carpeta de settings.py!
 CMD python manage.py collectstatic --noinput && gunicorn <nombre_proyecto>.wsgi:application --bind 0.0.0.0:8000

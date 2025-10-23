@@ -1,0 +1,8 @@
+#! 0-sistema-ventas-namespace.yaml
+# Generated code, do not edit
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: sistema-ventas
+    labels:
+        com.docker.compose.project: sistema_ventas
